@@ -76,7 +76,11 @@ Numbers are copied from each project's own reports. 🔓 = public code.
 - [**Resume Tailor**](https://github.com/LamShiuChing/Resume-App) 🔓: local resume tailoring with Gemini.
 - [**Are LLMs replacing software engineers?**](https://github.com/LamShiuChing/IT-job-post-LLM) 🔓: Indeed Hiring Lab data, 4 countries.
 - **LLM intraday trader**: two Claude agents (analyst + executive) with hard risk checks in code.
-- **Games built with AI**: Infinite Elevator, Tanks!, Monochrome Rush.
+- **Web games built with AI** (play in the browser):
+  - [Infinite Elevator](https://infiniteelevator.netlify.app/): a short horror game. Watch for small details to reach the ground floor.
+  - [Tanks!](https://eloquent-cranachan-efa2be.netlify.app/): an arcade game inspired by Wii Play's Tanks!.
+  - [Cartographer](https://darling-klepon-93cc1e.netlify.app/): study the land while it's revealed, then chart it from memory.
+  - Monochrome Rush: a Tetris fan game inspired by Tetris master mode.
 
 ## Files
 
