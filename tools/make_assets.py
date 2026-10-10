@@ -84,128 +84,80 @@ class Ctx:
         return dx
 
 
-# ---------------------------------------------------------------- scenes
-def s_question(c):
-    c.text((80, 90), "AI RESEARCH LOG  ·  AUG – OCT 2026", 28, BLUE, 0.0, bold=True)
-    c.text((80, 200), "Can a model keep", 84, INK, 0.3, bold=True)
-    c.text((80, 300), "learning after training,", 84, INK, 0.5, bold=True)
-    c.text((80, 400), "without forgetting?", 84, BLUE, 0.7, bold=True)
-    c.text((80, 560), "Today's LLMs learn once, then freeze:", 34, INK2, 1.3)
-    steps = [("Pretrain", INK), ("Freeze weights", INK), ("Chat ends,\nlesson is lost", ORANGE)]
-    for i, (label, col) in enumerate(steps):
-        x0 = 80 + i * 320
-        dx = c.card((x0, 630, x0 + 280, 790), 1.7 + i * 0.4, outline=col)
-        if dx is not None:
-            c.text((x0 + 140 + dx, 710 - (17 if "\n" in label else 0)), label.split("\n")[0], 32, col, 1.7 + i * 0.4,
-                   bold=True, anchor="mm", rise=0)
-            if "\n" in label:
-                c.text((x0 + 140 + dx, 727), label.split("\n")[1], 32, col, 1.7 + i * 0.4, bold=True, anchor="mm", rise=0)
-        if i < 2:
-            c.text((x0 + 300, 710), "→", 40, MUTED, 1.9 + i * 0.4, anchor="mm", rise=0)
-    c.text((80, 880), "I spent two months testing ways around that.", 34, INK, 3.0)
+# ---------------------------------------------------------------- scenes (vision -> idea -> key finding -> next)
+def s_vision(c):
+    c.text((80, 120), "MY VISION", 28, BLUE, 0.0, bold=True)
+    c.text((80, 230), "AI that keeps learning", 80, INK, 0.3, bold=True)
+    c.text((80, 330), "after training,", 80, INK, 0.5, bold=True)
+    c.text((80, 430), "on your own device.", 80, BLUE, 0.7, bold=True)
+    c.text((80, 640), "Today's models are trained once, then frozen.", 36, INK2, 1.6)
+    c.text((80, 700), "What they learn in a conversation is gone when it ends.", 36, INK2, 2.0)
     c.text((80, 990), SIGN, 24, MUTED, 0.2)
 
 
+STEPS = [  # tag, title, description, colour
+    ("DAY", "Fast memory", "writes new experience in seconds", AQUA),
+    ("NIGHT", "Sleep", "replays its own dreams to keep what it knew", VIOLET),
+    ("FOR LIFE", "Long-term weights", "hold old and new skills together", YELLOW),
+]
+
+
 def s_idea(c):
-    import math
-    c.text((80, 80), "My idea: learn like a brain", 60, INK, 0.0, bold=True)
-    c.text((80, 165), "Fast memory for today. Slow weights for life. Sleep in between.", 30, INK2, 0.3)
-    cx, cy, r = 540, 610, 200
-    arc_p = c.p(2.0, 1.2)
-    if arc_p > 0:
-        c.d.arc((cx - r, cy - r, cx + r, cy + r), 270, 270 + 360 * arc_p, fill=mix(LINE, c.k), width=5)
-    if c.t > 3.0:  # a thought travelling round the loop
-        ang = math.radians(270 + 360 * (((c.t - 3.0) / 2.6) % 1))
-        x, y = cx + r * math.cos(ang), cy + r * math.sin(ang)
-        c.d.ellipse((x - 18, y - 18, x + 18, y + 18), fill=mix(BLUE, 0.35 * c.k))
-        c.d.ellipse((x - 9, y - 9, x + 9, y + 9), fill=mix(INK, c.k))
-    nodes = [  # angle, title, sub, colour, anchor, title offset, sub offset (from node centre)
-        (270, "Experience", "new data, new tasks", BLUE, "ms", (0, -66), (0, -32)),
-        (0, "Fast memory", "\"hippocampus\", 1-s writes", AQUA, "ls", (36, -6), (36, 26)),
-        (90, "Sleep & replay", "consolidate, don't overwrite", VIOLET, "ms", (0, 72), (0, 104)),
-        (180, "Long-term weights", "\"cortex\": slow, shared", YELLOW, "rs", (-36, -6), (-36, 26)),
-    ]
-    for i, (deg, title, sub, col, anc, (tx, ty), (sx, sy)) in enumerate(nodes):
-        t0 = 0.6 + i * 0.35
+    c.text((80, 120), "THE IDEA", 28, BLUE, 0.0, bold=True)
+    c.text((80, 180), "Learn like a brain", 72, INK, 0.2, bold=True)
+    active = int((c.t - 2.4) / 0.9) % 3 if c.t > 2.4 else -1  # cycle highlight through the loop
+    for i, (tag, title, desc, col) in enumerate(STEPS):
+        x0, t0 = 80 + i * 330, 0.7 + i * 0.45
+        dx = c.card((x0, 360, x0 + 290, 700), t0, outline=col if i == active else None, slide=0)
+        if dx is None:
+            continue
+        c.d.rounded_rectangle((x0, 360, x0 + 290, 372), 6, fill=mix(col, c.p(t0) * c.k))
+        c.text((x0 + 30, 400), tag, 24, col, t0, bold=True)
+        c.text((x0 + 30, 440), title, 36, INK, t0, bold=True, maxw=240, gap=1.15)
+        c.text((x0 + 30, 560), desc, 25, INK2, t0, maxw=235)
+        if i < 2:
+            c.text((x0 + 310, 530), "→", 44, MUTED, t0 + 0.3, anchor="mm", rise=0)
+    c.text((80, 790), "No old data is stored. It rehearses by dreaming.", 36, INK, 2.2, bold=True)
+    c.text((80, 990), "Inspired by complementary learning systems theory (hippocampus + cortex)", 22, MUTED, 2.6)
+
+
+def s_finding(c):
+    c.text((80, 120), "MOST PROMISING FINDING", 28, BLUE, 0.0, bold=True)
+    n = 1 + 6 * c.p(1.6, 2.2)
+    c.text((80, 170), f"{n:.0f}× less forgetting", 80, INK, 0.2, bold=True)
+    c.text((80, 290), "A small GPT learned 6 kinds of English, one per day.", 32, INK2, 0.5)
+    rows = [("Normal day-by-day training", 0.58, 0.58, GRAY_BAR),
+            ("+ sleep on its own dreams", 0.58, 0.08, BLUE)]
+    full = 800  # px for 0.58
+    for i, (label, v0, v1, col) in enumerate(rows):
+        y, t0 = 430 + i * 190, 0.8 + i * 0.3
         a = c.p(t0) * c.k
         if a <= 0:
             continue
-        x, y = cx + r * math.cos(math.radians(deg)), cy + r * math.sin(math.radians(deg))
-        rr = 16 + 6 * (1 - c.p(t0))
-        c.d.ellipse((x - rr, y - rr, x + rr, y + rr), fill=mix(col, a))
-        c.text((x + tx, y + ty), title, 32, col, t0, bold=True, anchor=anc, rise=0)
-        c.text((x + sx, y + sy), sub, 23, INK2, t0, anchor=anc, rise=0)
-    c.text((cx, cy - 22), "learn fast,", 36, INK, 2.4, bold=True, anchor="mm", rise=0)
-    c.text((cx, cy + 26), "consolidate slow", 36, INK, 2.6, bold=True, anchor="mm", rise=0)
-    c.text((80, 1000), "Inspired by complementary learning systems theory (hippocampus + cortex)", 22, MUTED, 1.0)
+        v = v0 + (v1 - v0) * c.p(1.6, 2.2)
+        c.text((80, y), label, 30, INK if col == BLUE else INK2, t0, bold=col == BLUE, rise=0)
+        w = full * v / 0.58 * c.p(t0, 0.6)
+        c.d.rounded_rectangle((80, y + 50, 80 + max(w, 8), y + 110), 8, fill=mix(col, a))
+        c.text((80 + max(w, 8) + 20, y + 80), f"{v:.2f}", 40, INK, t0, bold=True, anchor="lm", rise=0)
+    c.text((80, 830), "Forgetting in bits per byte, lower is better.", 26, MUTED, 1.2)
+    c.text((80, 880), "Without slowing learning, and without storing any old text.", 32, INK, 3.6, bold=True)
+    c.text((80, 990), "Byte-level nanoGPT · BabyLM 10M, 6 domains · single RTX 4080 SUPER", 22, MUTED, 1.2)
 
 
-CARDS = [
-    ("Memory", AQUA, "Fact slots on a frozen transformer · least-squares memory · sleep replay"),
-    ("Continual learning", BLUE, "Re-tested Dohare et al. (Nature 2024) on loss of plasticity · 13 claims"),
-    ("Reasoning from scratch", YELLOW, "Trained GPTs 5M–124M · length extrapolation · composition · proofs"),
-    ("Agents & tools", VIOLET, "LoRA-tuned Qwen3-0.6B tool agent · Qwen2.5-14B memory gate · ARC-AGI-3"),
-    ("Brain-inspired wiring", ORANGE, "Real fruit-fly connectome vs RNN/GRU · DreamCoder-style program learning"),
-]
-
-
-def s_tested(c):
-    c.text((80, 80), "What I built & tested", 60, INK, 0.0, bold=True)
-    c.text((80, 165), "20+ experiments  ·  1 GPU (RTX 4080 SUPER)  ·  ~$5 of cloud", 30, INK2, 0.3)
-    for i, (title, col, desc) in enumerate(CARDS):
-        y0, t0 = 270 + i * 150, 0.6 + i * 0.35
-        dx = c.card((80, y0, 1000, y0 + 128), t0, stripe=col)
-        if dx is None:
-            continue
-        c.text((118 + dx, y0 + 22), title, 34, col, t0, bold=True, rise=0)
-        c.text((118 + dx, y0 + 74), desc, 23, INK2, t0, rise=0)
-    c.text((80, 1030), "Every run: pass/fail bar written first · controls · multiple seeds", 23, MUTED, 2.6)
-
-
-TILES = [  # big number formatter(progress), colour, title, subtitle
-    (lambda p: f"{max(1, round(7 * p))}×", BLUE, "less forgetting", "GPT sleeps on its own dreams: 0.58 → 0.08 bits/byte"),
-    (lambda p: f"{round(2000 * p):,}", AQUA, "old facts kept at 100%", "while new facts are written in ~1 s each"),
-    (lambda p: f"{0.74 * p:.2f}", YELLOW, "length extrapolation", "rotary positions: 0.00 → no positions + per-doc attention"),
-    (lambda p: f"{0.81 * p:.2f}", VIOLET, "unseen compositions", "up from ≤ 0.15 by adding data diversity, not size"),
-]
-
-
-def s_results(c):
-    c.text((80, 80), "Results that held up", 60, INK, 0.0, bold=True)
-    c.text((80, 165), "Small models, careful tests, numbers from my own runs", 30, INK2, 0.3)
-    for i, (num, col, title, sub) in enumerate(TILES):
-        x0, y0 = 80 + (i % 2) * 470, 260 + (i // 2) * 330
-        t0 = 0.5 + i * 0.4
-        dx = c.card((x0, y0, x0 + 450, y0 + 305), t0, stripe=col)
-        if dx is None:
-            continue
-        c.text((x0 + 40 + dx, y0 + 30), num(c.p(t0 + 0.2, 1.2)), 92, col, t0, bold=True, rise=0)
-        c.text((x0 + 40 + dx, y0 + 160), title, 30, INK, t0, bold=True, rise=0)
-        c.text((x0 + 40 + dx, y0 + 208), sub, 22, INK2, t0, rise=0, maxw=380)
-    c.text((80, 945), "Failures are logged too: real fly wiring lost to a GRU; a 14B model deciding when to "
-                      "retrieve used 64–76% more tokens than a simple rule.", 23, MUTED, 2.4, maxw=920)
-
-
-def s_learned(c):
-    c.text((80, 80), "What I learned", 60, INK, 0.0, bold=True)
-    lessons = [
-        "Simple baselines beat clever mechanisms more often than you'd think. Better to learn that in a day.",
-        "Generalization came from data diversity and outside verification, not model size or self-checking.",
-        "Dense shared weights forget. Replay, sleep and regularization only partly fix it.",
-    ]
-    for i, s in enumerate(lessons):
-        y, t0 = 210 + i * 175, 0.4 + i * 0.5
-        c.text((80, y - 8), f"0{i + 1}", 54, BLUE, t0, bold=True)
-        c.text((200, y), s, 32, INK, t0, maxw=800)
-    dx = c.card((80, 760, 1000, 920), 2.2, outline=BLUE)
+def s_next(c):
+    c.text((80, 120), "NEXT", 28, BLUE, 0.0, bold=True)
+    c.text((80, 180), "Make it last.", 80, INK, 0.2, bold=True)
+    c.text((80, 330), "Over long streams, shared weights still forget. I'm building architectures where new "
+                      "learning doesn't overwrite old knowledge, small enough for a local device.",
+           38, INK2, 0.6, maxw=920)
+    dx = c.card((80, 640, 1000, 860), 1.6, outline=BLUE)
     if dx is not None:
-        c.text((118 + dx, 785), "NEXT", 24, BLUE, 2.2, bold=True, rise=0)
-        c.text((118 + dx, 822), "Architectures where new learning doesn't overwrite old knowledge, running on "
-                                "a local device.", 30, INK, 2.2, bold=True, rise=0, maxw=840)
-    c.text((80, 990), SIGN, 24, INK2, 2.8)
+        c.text((120 + dx, 680), "Eric Lam  ·  AI Developer, Toronto", 34, INK, 1.6, bold=True, rise=0)
+        c.text((120 + dx, 740), "github.com/LamShiuChing/ai-research-log-and-idea", 30, BLUE, 1.6, rise=0)
+        c.text((120 + dx, 795), "20+ experiments · code · logs · papers", 26, INK2, 1.6, rise=0)
 
 
-SCENES = [(s_question, 5.0), (s_idea, 6.5), (s_tested, 5.5), (s_results, 6.5), (s_learned, 7.0)]
+SCENES = [(s_vision, 5.0), (s_idea, 6.5), (s_finding, 7.0), (s_next, 5.5)]
 TOTAL = sum(d for _, d in SCENES)
 
 
@@ -287,11 +239,14 @@ def claims_chart():
         "and a Rich Sutton interview. Permuted MNIST, 3 seeds, falsifier written before each run.", 62)),
         fontsize=19, color=hexc(INK2), va="top")
     ax = fig.add_axes([0.074, 0.5, 0.85, 0.12], facecolor=hexc(BG))
-    ax.barh(0, 7, height=0.6, color=hexc(BLUE))
-    ax.barh(0, 6, left=7.06, height=0.6, color=hexc(ORANGE))  # small surface gap between segments
-    ax.text(3.5, 0, "7 held up", fontsize=26, weight="bold", ha="center", va="center", color=hexc(INK))
-    ax.text(10.06, 0, "6 did not", fontsize=26, weight="bold", ha="center", va="center", color=hexc(INK))
-    ax.set_xlim(0, 13.06)
+    # current per-claim verdicts in CLAIMS.md (C10 was re-graded from falsified to undecided)
+    ax.barh(0, 8, height=0.6, color=hexc(BLUE))
+    ax.barh(0, 4, left=8.06, height=0.6, color=hexc(ORANGE))  # small surface gap between segments
+    ax.barh(0, 1, left=12.12, height=0.6, color=hexc(GRAY_BAR))
+    ax.text(4, 0, "8 held up", fontsize=26, weight="bold", ha="center", va="center", color=hexc(INK))
+    ax.text(10.06, 0, "4 did not", fontsize=26, weight="bold", ha="center", va="center", color=hexc(INK))
+    ax.text(12.62, -0.55, "1 undecided", fontsize=15, ha="center", va="top", color=hexc(INK2))
+    ax.set_xlim(0, 13.12)
     ax.axis("off")
     held = ["Plain backprop loses plasticity", "Adam is worse", "L2 helps but doesn't eliminate it (−2.4 to −3.0 pts)",
             "Replay reduces forgetting"]
@@ -343,7 +298,7 @@ def render_charts():
 
 
 def render_carousel(snaps, charts):
-    order = [snaps[0], snaps[1], snaps[2], *[Image.open(p).convert("RGB") for p in charts], snaps[3], snaps[4]]
+    order = [snaps[0], snaps[1], snaps[2], *[Image.open(p).convert("RGB") for p in charts], snaps[3]]
     order[0].save(OUT / "linkedin-carousel.pdf", save_all=True, append_images=order[1:], resolution=100)
     for i, s in enumerate(snaps):
         s.save(OUT / f"slide-{i + 1}.png")

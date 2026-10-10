@@ -57,7 +57,10 @@ def calc(expression):
         if isinstance(n, ast.Constant) and isinstance(n.value, (int, float)):
             return n.value
         if isinstance(n, ast.BinOp):
-            return OPS[type(n.op)](ev(n.left), ev(n.right))
+            left, right = ev(n.left), ev(n.right)
+            if isinstance(n.op, ast.Pow) and abs(right) > 1000:
+                raise ValueError(expression)  # cap exponents so e.g. 9**9**9 can't hang the process
+            return OPS[type(n.op)](left, right)
         if isinstance(n, ast.UnaryOp):
             return OPS[type(n.op)](ev(n.operand))
         raise ValueError(expression)

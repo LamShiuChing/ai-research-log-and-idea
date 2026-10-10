@@ -43,7 +43,7 @@ Numbers are copied from each project's own reports. 🔓 = public code.
 | Aug 19–20 | Generative Learning Transformer | Fact memory slots on a frozen backbone | Fact written in ~1 s; 2,000 earlier facts kept at 1.000; 2-hop 1.000 vs 0.010. Unseen words: 0.000 | Paused |
 | Aug 20 | Consolidation agent + CAM | Frozen base + learner fork + verified pool; hypervector program learner | With a model judge instead of ground truth, gains stalled; CAM falsified on transfer | Abandoned |
 | Aug 31 – Sep 1 | eureka: *Learning by Accretion* | Keep knowledge, source trust and skills outside a frozen core (nanoGPT 10–89M, SmolLM3-3B) | Provenance channel beat a lying majority 97 vs 29; fabrication 100% → 30%. Prompt-only baseline beat LoRA + provenance (73 vs 47) | Paper written, parked |
-| Sep 1–3 | Continual learning claims | Re-test Dohare et al. (Nature 2024) on permuted MNIST | 13 claims: 7 held up, 6 didn't | Concluded |
+| Sep 1–3 | Continual learning claims | Re-test Dohare et al. (Nature 2024) on permuted MNIST | 13 claims: 8 held up, 4 didn't, 1 undecided | Concluded |
 | ~Sep 5 | Self-improvement loops | When does a model improve itself vs drift? | Verified + exploration: pass@100 0.85 vs self-judging 0.30 | Theory note |
 | Sep 6–8 | OPAL | DreamCoder-style program induction with a learned library, plus LLM proposers | Library agent 6/12 rules vs 3/12 for controls; cross-domain transfer 0/9 | Concluded |
 | Sep 8–9 | Small adaptive systems | Can tiny learners improve through experience? | Hybrid memory: old tasks 41.9% → 60.6%, but new tasks slowed | Concluded |
