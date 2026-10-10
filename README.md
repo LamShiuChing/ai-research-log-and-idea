@@ -87,5 +87,5 @@ Numbers are copied from each project's own reports. 🔓 = public code.
 - `tools/make_assets.py`: regenerates the visuals (`python tools/make_assets.py`; needs Pillow, matplotlib, ffmpeg)
 - `tools/md_to_pdf.py`: rebuilds the paper PDFs (needs `markdown` and Chrome)
 
-Open to AI/ML engineer and research engineer roles in Toronto or remote ·
+Open to AI/ML engineer and software engineer roles (front end, back end, full stack) in Toronto or remote ·
 [LinkedIn](https://www.linkedin.com/in/lamshiuchingeric/)
