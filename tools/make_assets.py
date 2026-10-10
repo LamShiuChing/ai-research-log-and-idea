@@ -124,23 +124,24 @@ def s_idea(c):
 def s_finding(c):
     c.text((80, 120), "MOST PROMISING FINDING", 28, BLUE, 0.0, bold=True)
     n = 1 + 6 * c.p(1.6, 2.2)
-    c.text((80, 170), f"{n:.0f}× less forgetting", 80, INK, 0.2, bold=True)
-    c.text((80, 290), "A small GPT learned 6 kinds of English, one per day.", 32, INK2, 0.5)
+    c.text((80, 170), f"Up to {n:.0f}× less forgetting", 76, INK, 0.2, bold=True)
+    c.text((80, 290), "A small GPT learned 6 kinds of English, one per day. 3 seeds each.", 30, INK2, 0.5)
     rows = [("Normal day-by-day training", 0.58, 0.58, GRAY_BAR),
-            ("+ sleep on its own dreams", 0.58, 0.08, BLUE)]
+            ("+ sleep on its own dreams", 0.58, 0.19, BLUE),
+            ("+ stronger sleep (more dreams, keep harder)", 0.58, 0.08, BLUE)]
     full = 800  # px for 0.58
     for i, (label, v0, v1, col) in enumerate(rows):
-        y, t0 = 430 + i * 190, 0.8 + i * 0.3
+        y, t0 = 380 + i * 150, 0.8 + i * 0.3
         a = c.p(t0) * c.k
         if a <= 0:
             continue
         v = v0 + (v1 - v0) * c.p(1.6, 2.2)
-        c.text((80, y), label, 30, INK if col == BLUE else INK2, t0, bold=col == BLUE, rise=0)
+        c.text((80, y), label, 28, INK if col == BLUE else INK2, t0, bold=col == BLUE, rise=0)
         w = full * v / 0.58 * c.p(t0, 0.6)
-        c.d.rounded_rectangle((80, y + 50, 80 + max(w, 8), y + 110), 8, fill=mix(col, a))
-        c.text((80 + max(w, 8) + 20, y + 80), f"{v:.2f}", 40, INK, t0, bold=True, anchor="lm", rise=0)
-    c.text((80, 830), "Forgetting in bits per byte, lower is better.", 26, MUTED, 1.2)
-    c.text((80, 880), "Without slowing learning, and without storing any old text.", 32, INK, 3.6, bold=True)
+        c.d.rounded_rectangle((80, y + 46, 80 + max(w, 8), y + 98), 8, fill=mix(col, a))
+        c.text((80 + max(w, 8) + 20, y + 72), f"{v:.2f}", 38, INK, t0, bold=True, anchor="lm", rise=0)
+    c.text((80, 840), "Forgetting in bits per byte, lower is better.", 26, MUTED, 1.2)
+    c.text((80, 885), "No old text is stored. It rehearses by dreaming.", 32, INK, 3.6, bold=True)
     c.text((80, 990), "Byte-level nanoGPT · BabyLM 10M, 6 domains · single RTX 4080 SUPER", 22, MUTED, 1.2)
 
 
@@ -266,10 +267,12 @@ def claims_chart():
 def render_charts():
     f2 = lambda v: f"{v:.2f}"
     return [
-        chart("result-sleep-forgetting", "Sleep cut forgetting 7×",
-              "A small GPT learns day by day. Between days it 'sleeps': rehearses and replays its own generated text.",
-              [("Normal day-by-day training", 0.58, False), ("+ sleep on its own dreams", 0.08, True)], f2,
-              "Forgetting in bits per byte, lower is better. Much less forgetting, but not zero."),
+        chart("result-sleep-forgetting", "Sleep cut forgetting 3–7×",
+              "A small GPT learns day by day. Between days it 'sleeps': keeps its old predictions on its own dreams.",
+              [("Normal day-by-day training", 0.58, False), ("+ sleep on its own dreams", 0.19, True),
+               ("+ stronger sleep (keep weight 3, 2,048 dreams)", 0.08, True)], f2,
+              "Forgetting in bits per byte, lower is better; 3 seeds per arm. The stronger setting was the best of "
+              "4 pre-defined arms, picked after the run. Much less forgetting, but not zero."),
         chart("result-cifar-retention", "Remembering day 1 after 20 days",
               "CIFAR-100 learned as a 20-day stream, frozen image encoder. Accuracy on day-1 classes at the end.",
               [("Normal network", 0.00, False), ("Running-sum link memory", 0.79, True)], f2,

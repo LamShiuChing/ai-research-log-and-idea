@@ -35,6 +35,7 @@ And one negative result, kept on purpose:
 ## Every experiment
 
 Numbers are copied from each project's own reports. 🔓 = public code.
+**Full write-ups:** [24 project logs and 15 short papers](logs/) · **Code:** [core code for 5 experiments](experiments/)
 
 | Dates | Project | Question | Key result | Status |
 |---|---|---|---|---|
@@ -49,14 +50,14 @@ Numbers are copied from each project's own reports. 🔓 = public code.
 | Sep 8–9 | Small adaptive systems | Can tiny learners improve through experience? | Hybrid memory: old tasks 41.9% → 60.6%, but new tasks slowed | Concluded |
 | Sep 10 | Executive control + MemRL | Should the model decide when to recall memory? | Qwen2.5-14B gate used 64–76% more tokens and missed needed retrievals; MemRL not reproduced | Closed |
 | Sep 11–12 | Fruit-fly connectome | Does real fly wiring learn faster than standard nets? | No: GRU won odor conditioning 4/4; no RL advantage with any plasticity rule | Concluded |
-| Sep 11–12 | Verified deduction | Can a small transformer learn checkable multi-step proofs? | 10.8M model: 107/150 correct, 41/150 valid proofs; depth 3–4: none | Stopped |
+| Sep 11–12 | Verified deduction | Can a small transformer learn checkable multi-step proofs? | 10.8M model: 107/150 correct, 41/150 valid proofs; depth 3–4: nearly none | Stopped |
 | Sep 13–16 | [LM optimization](https://github.com/LamShiuChing/LM-optimization) 🔓 | How do small GPTs (5M–85M) learn reasoning? 31 findings | Rotary 0.00 vs no-position + doc-mask 0.74 length extrapolation; held-out composition ≤0.15 → 0.81 with more diverse data | Models published |
 | Sep 1–16 | Compact continual learners | Frozen MiniLM + online heads on BANKING77 / CLINC150 | 84.15% on held-out domains at 4-shot, but a simple prototype memory still won | Milestones done |
 | Sep 17–20 | Decision model (LCM) | One trained scorer (DeBERTa 141M) for answers and memory/tool actions | NLI 30.7% → 65.8%, Boolean 50.0% → 84.8%; but routing regressed 32 → 13/32 and diagnostic transfer was 0/48 | Paused |
 | Sep 19 | Generative proposer | Can a CVAE (96k params) design Boolean circuits? | 5/576 vs 7/576 for retrieval + mutation: no advantage | One run |
 | Sep 21 | [ELM](https://github.com/LamShiuChing/Language-Model-Optimization) 🔓 | LoRA-tune a small model into a local tool-using agent | Qwen3-0.6B: 19/22 on a dev benchmark, live web 3/4 | Ongoing |
 | Sep 25 – Oct 2 | ARC-AGI-3 agents | Interactive puzzle games | Random 0.05%; best (curious agent) 1.82% | Ongoing |
-| Sep 26–29 | Brain-like continual learner | Fact memory + slots + sleep + continual GPT | Sleep: forgetting 0.58 → 0.08; CIFAR-100 day-1 0.79 vs 0.00; 1D-ARC 144 → 152. A 13-day Wikipedia stream still forgot | Stopped: "too shallow" |
+| Sep 26–29 | Brain-like continual learner | Fact memory + slots + sleep + continual GPT | Sleep: forgetting 0.58 → 0.19 (stronger sleep: 0.08); CIFAR-100 day-1 0.79 vs 0.00; 1D-ARC 144 → 152. A 13-day Wikipedia stream still forgot | Stopped: "too shallow" |
 | Oct 1–5 | Locked blocks | Never-forgetting blocks for a language model (124M, BLiMP 0.766) | Locked blocks never forget, but a normal GPT was 6% better on unseen kinds | Ongoing |
 
 ## What I learned
@@ -81,7 +82,10 @@ Numbers are copied from each project's own reports. 🔓 = public code.
 
 - `assets/idea-map.mp4` / `.gif`: animated overview (1080×1080)
 - `assets/linkedin-carousel.pdf`: all slides and charts as one carousel
-- `tools/make_assets.py`: regenerates everything (`python tools/make_assets.py`; needs Pillow, matplotlib, ffmpeg)
+- `logs/`: one write-up per project; `logs/papers/`: short papers (PDF + markdown source)
+- `experiments/`: core code and original reports for five experiments
+- `tools/make_assets.py`: regenerates the visuals (`python tools/make_assets.py`; needs Pillow, matplotlib, ffmpeg)
+- `tools/md_to_pdf.py`: rebuilds the paper PDFs (needs `markdown` and Chrome)
 
 Open to AI/ML engineer and research engineer roles in Toronto or remote ·
 [LinkedIn](https://www.linkedin.com/in/lamshiuchingeric/)
